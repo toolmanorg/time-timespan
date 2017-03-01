@@ -22,7 +22,7 @@ func TestCoefficientEmptyValue(t *testing.T) {
 
 	// Retrieve value from empty coefficient
 	// Expect: _, missingCoefErr
-	_, err := coef.value()
+	_, err := coef.value(1)
 	if err == nil {
 		t.Errorf("No error while retreiving value from empty coefficient: Wanted %s", missingCoefErr)
 	} else if err != nil && err.errorType != missingCoefErr {
@@ -52,7 +52,7 @@ func TestCoefficientValue(t *testing.T) {
 
 	// Retrieve value from populated coefficient
 	// Expect: 12345, nil
-	if got, err := coef.value(); err != nil {
+	if got, err := coef.value(1); err != nil {
 		t.Errorf("Error discerning value of coefficient %q: %v", coef, err)
 	} else if got != want {
 		t.Errorf("Value mismatch for coefficient %q: Got %d; Wanted %d", coef, got, want)
@@ -73,21 +73,23 @@ func TestCoefficientNonDigit(t *testing.T) {
 
 }
 
-func TestCoefficientBadDash(t *testing.T) {
+func TestCoefficientBadSign(t *testing.T) {
 	coef := coefficient("123")
 
-	// Append '-' character to populated coefficient
-	// Expect: false, missplacedDashErr
-	if ok, err := coef.appendRune('-'); err != nil {
-		if err.errorType != missplacedDashErr {
-			t.Errorf("Incorrect error returned while appending '-' to non-empty coefficient: Got %s; Wanted %s", err, missplacedDashErr)
+	// Append '-' and '+' chars to populated coefficient
+	// Expect: false, misplacedSignErr
+	for _, c := range []rune{'-', '+'} {
+		if ok, err := coef.appendRune(c); err != nil {
+			if err.errorType != misplacedSignErr {
+				t.Errorf("Incorrect error returned while appending '%c' to non-empty coefficient: Got %s; Wanted %s", c, err, misplacedSignErr)
+			}
+		} else if ok {
+			t.Errorf("appendRune erroneously accepted '%c' as a valid digit", c)
 		}
-	} else if ok {
-		t.Error("appendRune erroneously accepted '-' as a valid digit")
 	}
 }
 
-func TestCoefficientGoodDash(t *testing.T) {
+func TestCoefficientGoodSign(t *testing.T) {
 	coef := newCoefficient()
 
 	if ok, err := coef.appendRune('-'); err != nil {
@@ -98,9 +100,35 @@ func TestCoefficientGoodDash(t *testing.T) {
 
 	coef = append(coef, '1', '2')
 
-	if v, err := coef.value(); err != nil {
+	if v, err := coef.value(1); err != nil {
 		t.Errorf("Error acquiring value of coefficient %q: %v", coef, err)
 	} else if v != -12 {
 		t.Errorf("Coefficient value mismatch: Got:%d Wanted:%d", v, -12)
+	}
+}
+
+func TestCoefficientSignOverride(t *testing.T) {
+	for _, str := range []string{"123", "-123", "+123"} {
+		for _, sign := range []int{1, -1} {
+			coef := coefficient(str)
+			if got, err := coef.value(sign); err != nil {
+				t.Errorf("Error discerning value of coefficient %q: %v", coef, err)
+			} else {
+				var want int
+				switch {
+					case str[0] == '+':
+						want = 123
+
+					case str[0] == '-':
+						want = -123
+
+					default:
+						want = 123 * sign
+				}
+				if got != want {
+					t.Errorf("Coefficient sign override failure.  Got:%d Wanted:%d", got, want)
+				}
+			}
+		}
 	}
 }

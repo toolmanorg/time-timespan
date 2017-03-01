@@ -18,6 +18,21 @@ func TestParseTimespanGood(t *testing.T) {
 		{str: "2D1h", want: &Timespan{0, 0, 2, 1 * time.Hour}},
 		{str: "4W1d", want: &Timespan{0, 0, 29, 0}},
 		{str: "4W-1d", want: &Timespan{0, 0, 27, 0}},
+
+		// Test sign commutation...
+		{str: "1M2D",  want: &Timespan{0, 1, 2, 0}},
+		{str: "1M-2D",  want: &Timespan{0, 1, -2, 0}},
+		{str: "-1M2D",  want: &Timespan{0, -1, -2, 0}},
+		{str: "-1M-2D",  want: &Timespan{0, -1, -2, 0}},
+		{str: "-1M+2D",  want: &Timespan{0, -1, 2, 0}},
+
+		// ...and again with weeks (since they're special)
+		{str: "1W2D",  want: &Timespan{0, 0, 9, 0}},
+		{str: "1W-2D",  want: &Timespan{0, 0, 5, 0}},
+		{str: "-1W2D",  want: &Timespan{0, 0, -9, 0}},
+		{str: "-1W-2D",  want: &Timespan{0, 0, -9, 0}},
+		{str: "-1W+2D",  want: &Timespan{0, 0, -5, 0}},
+
 		{str: "1Y2M3W4D5h6m7s", want: &Timespan{1, 2, 25, 5*time.Hour + 6*time.Minute + 7*time.Second}},
 	}
 
@@ -28,7 +43,7 @@ func TestParseTimespanGood(t *testing.T) {
 			continue
 		}
 
-		if !(td.want.years == got.years && td.want.months == got.months && td.want.days == got.days && td.want.dur == got.dur) {
+		if !(td.want.Years == got.Years && td.want.Months == got.Months && td.want.Days == got.Days && td.want.Duration == got.Duration) {
 			t.Errorf("Mismatch parsing Timespan %q  Got:%+v  Wanted:%+v", td.str, got, td.want)
 		}
 	}
@@ -40,7 +55,8 @@ func TestParseTimespanBad(t *testing.T) {
 		{str: "1h2D", etype: unrecognizedMagErr},
 		{str: "1D2W", etype: magnOutOfOrderError},
 		{str: "3W2W", etype: magnRestatedErr},
-		{str: "4W1-D", etype: missplacedDashErr},
+		{str: "4W1-D", etype: misplacedSignErr},
+		{str: "4W1+2D", etype: misplacedSignErr},
 	}
 
 	for _, td := range data {
@@ -83,13 +99,13 @@ func TestTimespanString(t *testing.T) {
 	}
 }
 
-func TestTimespanDelta(t *testing.T) {
+func TestTimespanFrom(t *testing.T) {
 	ts := &Timespan{0, 2, 14, 2*time.Hour + 30*time.Minute}
 
 	base := time.Date(2014, 03, 03, 17, 0, 0, 0, time.UTC)
 	want := time.Date(2014, 05, 17, 19, 30, 0, 0, time.UTC)
 
-	got := ts.Delta(base)
+	got := ts.From(base)
 
 	if !want.Equal(got) {
 		t.Errorf("Timespan Delta Mismatch:\n\t Got: %v\n\tWant: %v", got, want)

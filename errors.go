@@ -8,7 +8,7 @@ type errType int
 
 const (
 	noErr errType = iota
-	missplacedDashErr
+	misplacedSignErr
 	missingCoefErr
 	unparseableCoefErr
 	unrecognizedMagErr

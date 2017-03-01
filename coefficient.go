@@ -14,9 +14,9 @@ func (c *coefficient) String() string {
 }
 
 func (c *coefficient) appendRune(r rune) (bool, *timespanErr) {
-	if r == '-' {
+	if r == '-' || r == '+' {
 		if len(*c) > 0 {
-			return false, timespanError(missplacedDashErr, "misplaced '-' in coefficient %q", c)
+			return false, timespanError(misplacedSignErr, "misplaced '%c' in coefficient %q", r, c)
 		}
 		*c = append(*c, r)
 		return true, nil
@@ -30,7 +30,7 @@ func (c *coefficient) appendRune(r rune) (bool, *timespanErr) {
 	return false, nil
 }
 
-func (c *coefficient) value() (int, *timespanErr) {
+func (c *coefficient) value(sign int) (int, *timespanErr) {
 	if len(*c) < 1 {
 		return 0, timespanError(missingCoefErr, "missing coefficient")
 	}
@@ -40,5 +40,14 @@ func (c *coefficient) value() (int, *timespanErr) {
 	if err != nil {
 		return 0, timespanError(unparseableCoefErr, "unparseable coefficient: %q", cs)
 	}
+
+	// If a) the sign override is negative and
+	//    b) the parsed value is positive and
+	//    c) the string isn't explicitly positive,
+	// negate the return value
+	if sign < 0 && cv > 0 && cs[0] != '+' {
+		cv *= -1
+	}
+
 	return cv, nil
 }
