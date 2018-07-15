@@ -57,6 +57,7 @@ func TestParseTimespanBad(t *testing.T) {
 		{str: "3W2W", etype: magnRestatedErr},
 		{str: "4W1-D", etype: misplacedSignErr},
 		{str: "4W1+2D", etype: misplacedSignErr},
+		{str: "18h9", etype: badDurationErr},
 	}
 
 	for _, td := range data {

@@ -141,6 +141,17 @@ type Timespan struct {
 // 
 func ParseTimespan(s string) (*Timespan, error) {
 	ts := &Timespan{}
+
+	// If s contains no Timespan magnitude characters. we'll short-curcuit
+	// to only parsing a time.Duration.
+	if strings.IndexAny(s, "YMWDd") == -1 {
+		var err error
+		if ts.Duration, err = time.ParseDuration(s); err != nil {
+			return nil, timespanError(badDurationErr, err.Error())
+		}
+		return ts, nil
+	}
+
 	ms := newMagset()
 
 	sign := 1

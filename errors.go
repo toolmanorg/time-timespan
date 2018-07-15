@@ -15,6 +15,7 @@ const (
 	magnOrderUnkownErr
 	magnRestatedErr
 	magnOutOfOrderError
+	badDurationErr
 )
 
 type timespanErr struct {
