@@ -82,7 +82,7 @@ func TestTimespanEqual(t *testing.T) {
 	ts2 := &Timespan{1, 2, 3, 4 * time.Hour}
 
 	if !ts1.Equal(ts2) {
-		t.Errorf("Timespans should be identical:\n\t 1) %v\n\t2) %v")
+		t.Errorf("Timespans should be identical:\n\t 1) %v\n\t2) %v", ts1, ts2)
 	}
 }
 
