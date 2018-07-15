@@ -20,18 +20,18 @@ func TestParseTimespanGood(t *testing.T) {
 		{str: "4W-1d", want: &Timespan{0, 0, 27, 0}},
 
 		// Test sign commutation...
-		{str: "1M2D",  want: &Timespan{0, 1, 2, 0}},
-		{str: "1M-2D",  want: &Timespan{0, 1, -2, 0}},
-		{str: "-1M2D",  want: &Timespan{0, -1, -2, 0}},
-		{str: "-1M-2D",  want: &Timespan{0, -1, -2, 0}},
-		{str: "-1M+2D",  want: &Timespan{0, -1, 2, 0}},
+		{str: "1M2D", want: &Timespan{0, 1, 2, 0}},
+		{str: "1M-2D", want: &Timespan{0, 1, -2, 0}},
+		{str: "-1M2D", want: &Timespan{0, -1, -2, 0}},
+		{str: "-1M-2D", want: &Timespan{0, -1, -2, 0}},
+		{str: "-1M+2D", want: &Timespan{0, -1, 2, 0}},
 
 		// ...and again with weeks (since they're special)
-		{str: "1W2D",  want: &Timespan{0, 0, 9, 0}},
-		{str: "1W-2D",  want: &Timespan{0, 0, 5, 0}},
-		{str: "-1W2D",  want: &Timespan{0, 0, -9, 0}},
-		{str: "-1W-2D",  want: &Timespan{0, 0, -9, 0}},
-		{str: "-1W+2D",  want: &Timespan{0, 0, -5, 0}},
+		{str: "1W2D", want: &Timespan{0, 0, 9, 0}},
+		{str: "1W-2D", want: &Timespan{0, 0, 5, 0}},
+		{str: "-1W2D", want: &Timespan{0, 0, -9, 0}},
+		{str: "-1W-2D", want: &Timespan{0, 0, -9, 0}},
+		{str: "-1W+2D", want: &Timespan{0, 0, -5, 0}},
 
 		{str: "1Y2M3W4D5h6m7s", want: &Timespan{1, 2, 25, 5*time.Hour + 6*time.Minute + 7*time.Second}},
 	}
