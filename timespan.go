@@ -7,31 +7,22 @@
 // This package provides two types:
 //
 // 		Timespan - An extension to time.Duration
-// 		Time     - an alias for time,Time (to ease use of Timespan values)
+// 		Time     - an alias for time.Time (to ease use of Timespan values)
 //
 // Most of the functionality provided here is available using functions from
 // the standard "time" package and is provided here merely as a convenience.
 //
 // However, this package's raison d'être is the function ParseTimespan, which
-// provides the ability to specify a wide variety of broad-scaled time spans --
-// from nanoseconds to many years -- as a simple, string value similar to that
-// parseable by time.ParseDuration.
+// provides the ability to specify a wide variety of broad-scaled time periods
+// -- from nanoseconds to many years -- as a simple, string value similar to
+// that parseable by time.ParseDuration.
 //
 // For example, a time span of "1 year, 6 months" is specified as "1Y6M"
 // or, its virtual equivalent, "18 months" as a simple "18M".  Timespan
 // strings can be as simple as "3W" for "3 weeks" or something crazy like
 // "1Y2M3W4D5h6m7s89ms" which is (hopefully) quite self explanatory.
 //
-// The full syntax for TimeSpan strings is described below.
-//
-package timespan
-
-import (
-	"fmt"
-	"time"
-)
-
-// A Timespan represents a span of time with wide and varying resolutions.
+// Motivation
 //
 // Unlike the standard time.Duration, which only provides accuracy and
 // parseability at resolutions less than a day, a Timespan may cover many days,
@@ -49,12 +40,102 @@ import (
 //
 // As an example, consider the Timespan values of "2 days" and "48 hours". In
 // most cases, these two are functionally equivalent; 48 hours is always 48
-// hours yet 2 days is usually 48 hours -- but not always.  In the approach to
-// a daylight savings time cutover, the "2 days" value would be either 47 or 49
-// hours (depending on whether we're "springing forward" or "falling back").
+// hours yet 2 days is sometimes not 48 hours.  In the approach to a daylight
+// savings time cutover, the "2 days" value would be either 47 or 49 hours
+// (depending on whether we're "springing forward" or "falling back").
 //
 // In most cases however, these ambiguities are understood at the human level
 // and Timespan will behave as the user intends without much further thought.
+//
+// Parsing
+//
+// A Timespan string is the conjunction of one or more periods (as
+// coefficient+magnitude pairs) plus an optional time.Duration string.
+//
+// Parsing is governed by the following rules:
+//
+// 1. Each period is a coefficient magnitude pair where the coefficient is
+// a signed integer value and its magnitude is one of the following
+// single-character indicators:
+//
+//      Y: Years
+//      M: Months
+//      W: Weeks
+//      D: Days (or optionally 'd')
+//
+// 2. Each successive period must be specified in a decreasing magnitude order.
+// In other words, years must be specified before months and months before
+// weeks, etc... Periods specified out of order will cause an error.
+//
+// 3. The magnitude of each period must be distinct; any restated magnitude
+// (e.g.  "3W-1W"), causes a parsing error.
+//
+// 4. The positive or negative sense of each coefficient may be implied or
+// expressly stated. By default, values are assumed positive until one is
+// explicitly declared to be negative. Subsequent (implicitly signed) values
+// are assumed to be negative until an explicit positive coefficient is
+// encountered.
+//
+// 5. Zero value magnitudes may be omitted.
+//
+// 6. Each specified magnitide must be accompanied by a coefficient.
+//
+// 7. No whitespace is allowed anywhere in the string.
+//
+// 8. If supplied, the optional time.Duration string must be at the end of the
+// string and must (of course) be parseable by time.ParseDuration.
+//
+// The natural tendency while parsing a Timespan string is to assume a nagative
+// sign commutes across successive values until it is reversed. In other words,
+// the stated positive or negative sign is always "sticky" for later values.
+//
+// For example, "-1Y2M" is parsed to {Years: -1, Months: -2}. If your intent is
+// instead for "Years" to be negative and "Months" to be positive (e.g. {Years:
+// -1, Months: +2}), you must explicitly change the sign back to positive with
+// "-1Y+2M".
+//
+// Since a week is always 7 days, the available "W" magnitude is provided
+// merely as a convenience; it is not stored as part of the Timespan value.
+// Coeffients provided in weeks are stored as multiples of 7 days.
+//
+// If ParseTimespan is unable to parse the given string, it returns nil and an
+// approprate error.
+//
+// Grammar
+//
+// Finally, for those so inclined, the formal grammar for a Timespan string
+// is shown in the following Pseudo-BNF:
+//
+//     <timespan>    := <periods>
+//                    | <duration>
+//                    | <periods> <duration>
+//
+//     <periods>     := <period>
+//                    | <periods> <period>
+//
+//     <period>      := <coefficient> MAGNITUDE
+//                    | SIGN <coefficient> MAGNITUDE
+//
+//     <coefficient> := DIGIT
+//                    | <coefficient> DIGIT
+//
+//     DIGIT         := '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+//
+//     SIGN          := '-' | '+'
+//
+//     MAGNITUDE     := 'Y' | 'M' | 'W' | 'D' | 'd'
+//
+//     <duration>    := {Anything parseable by time.ParseDuration}
+//
+package timespan
+
+import (
+	"fmt"
+	"strings"
+	"time"
+)
+
+// A Timespan represents a span of time with wide and varying resolutions.
 //
 type Timespan struct {
 	// Years in this Timespan
@@ -71,74 +152,8 @@ type Timespan struct {
 }
 
 // ParseTimespan returns a pointer to a new Timespan value which is the result
-// of parsing a string representation for the desired Timespan.  The string is
-// the conjunction of one or more coefficient+magnitude pairs plus an optional
-// time.Duration string.
+// of parsing a string representation for the desired Timespan.
 //
-// Each coefficient is a signed integer value while its magnitude is one of the
-// following single-character indicators:
-//
-//  Y: Years
-//  M: Months
-//  W: Weeks
-//  D: Days (or optionally 'd')
-//
-// Each successive coefficient+magnitude pair must be specified in a decreasing
-// magnitude order. In other words, years must be specified before months and
-// months must be specified before weeks, etc... If this ordering is not kept,
-// ParseTimespan will emit an error.  Also, each magnitude must be distinct. If
-// any magnitude resolution is restated (e.g. "3W+1W"), parsing will fail.
-//
-// The natural tendency while parsing a Timespan string is to assume a nagative
-// case commutes across successive values until it is reversed. In other words,
-// the stated positive or negative sense is always "sticky" for later values.
-//
-// Or rather, the positive or negative sense of each coefficient may be implied
-// or expressly stated. By default, values are implied to be positive until one
-// is explicitly declared to be negative. Subsequent values are then implied to
-// be negative until an explicit positive coefficient is encountered.
-//
-// For example, "-1Y2M" is parsed to {Years: -1, Months: -2}. If your intent is
-// instead for "Years" to be negative and "Months" to be positive (e.g. {Years:
-// -1, Months: +2}), you must explicitly change the sense back to positive with
-// "-1Y+2M".
-//
-// Zero value magnitudes may be omitted. However, each specified magnitide must
-// be accompanied by a coefficient.  No whitespace is allowed anywhere in the
-// string.  If supplied, the optional time.Duration string must be at the end
-// of the string and must (of course) be parseable by time.ParseDuration.
-//
-// Since a week is always 7 days, the available "W" magnitude is provided
-// merely as a convenience; it is not stored as part of the Timespan value.
-// Coeffients provided in weeks are stored as multiples of 7 days.
-//
-// If ParseTimespan is unable to parse the given string, it returns nil and an
-// approprate error.
-//
-// Finally, for those so inclined, the formal grammar for a Timespan string
-// is shown in the following Pseudo-BNF:
-//
-//     <timespan>    := <periods>
-//                    | <duration>
-//                    | <periods> <duration>
-// 
-//     <periods>     := <period>
-//                    | <periods> <period>
-// 
-//     <period>      := <coefficient> MAGNITUDE
-//                    | SENSE <coefficient> MAGNITUDE
-// 
-//     <duration>    := {Anything parseable by time.ParseDuration}
-// 
-//     <coefficient> := DIGIT
-//                    | <coefficient> DIGIT
-// 
-//     DIGIT         := '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
-// 
-//     SENSE         := '-' | '+'
-// 
-//     MAGNITUDE     := 'Y' | 'M' | 'W' | 'D' | 'd'
-// 
 func ParseTimespan(s string) (*Timespan, error) {
 	ts := &Timespan{}
 
