@@ -33,7 +33,7 @@ func TestParseTimespanGood(t *testing.T) {
 		{str: "-1W-2D", want: &Timespan{0, 0, -9, 0}},
 		{str: "-1W+2D", want: &Timespan{0, 0, -5, 0}},
 
-		{str: "1Y2M3W4D5h6m7s", want: &Timespan{1, 2, 25, 5*time.Hour + 6*time.Minute + 7*time.Second}},
+		{str: "1Y2M3W4D5h6m7s89ms", want: &Timespan{1, 2, 25, 5*time.Hour + 6*time.Minute + 7*time.Second + 89*time.Millisecond}},
 	}
 
 	for _, td := range data {
