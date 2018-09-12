@@ -13,7 +13,6 @@
 
     go get toolman.org/timespan
 
-
 ```
 
 ## <a name="pkg-overview">Overview</a>
@@ -25,7 +24,6 @@ This package provides two types:
 
 	Timespan - An extension to time.Duration
 	Time     - an alias for time.Time (to ease use of Timespan values)
-
 
 ```
 
@@ -82,7 +80,6 @@ single-character indicators:
 	M: Months
 	W: Weeks
 	D: Days (or optionally 'd')
-
 
 ```
 
@@ -150,7 +147,6 @@ is shown in the following Pseudo-BNF:
 	MAGNITUDE     := 'Y' | 'M' | 'W' | 'D' | 'd'
 	
 	<duration>    := {Anything parseable by time.ParseDuration}
-
 
 ```
 
