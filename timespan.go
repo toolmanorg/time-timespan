@@ -157,7 +157,7 @@ type Timespan struct {
 func ParseTimespan(s string) (*Timespan, error) {
 	ts := &Timespan{}
 
-	// If s contains no Timespan magnitude characters. we'll short-curcuit
+	// If s contains no Timespan magnitude characters. we'll short-circuit
 	// to only parsing a time.Duration.
 	if strings.IndexAny(s, "YMWDd") == -1 {
 		var err error
