@@ -24,9 +24,9 @@ func TestCoefficientEmptyValue(t *testing.T) {
 	// Expect: _, missingCoefErr
 	_, err := coef.value(1)
 	if err == nil {
-		t.Errorf("No error while retreiving value from empty coefficient: Wanted %s", missingCoefErr)
+		t.Errorf("No error while retreiving value from empty coefficient: Wanted %v", missingCoefErr)
 	} else if err != nil && err.errorType != missingCoefErr {
-		t.Errorf("Incorrect error retreiving value from empty coefficient: Got %s; Wanted %s", err, missingCoefErr)
+		t.Errorf("Incorrect error retreiving value from empty coefficient: Got %v; Wanted %v", err, missingCoefErr)
 	}
 }
 
@@ -81,7 +81,7 @@ func TestCoefficientBadSign(t *testing.T) {
 	for _, c := range []rune{'-', '+'} {
 		if ok, err := coef.appendRune(c); err != nil {
 			if err.errorType != misplacedSignErr {
-				t.Errorf("Incorrect error returned while appending '%c' to non-empty coefficient: Got %s; Wanted %s", c, err, misplacedSignErr)
+				t.Errorf("Incorrect error returned while appending '%c' to non-empty coefficient: Got %v; Wanted %v", c, err, misplacedSignErr)
 			}
 		} else if ok {
 			t.Errorf("appendRune erroneously accepted '%c' as a valid digit", c)

@@ -100,7 +100,7 @@ func TestMagsetBadRune(t *testing.T) {
 	ms := mkMagset(be('A', "one"), ve('B', "two", 42))
 
 	if err := ms.set('C', 1); err.errorType != unrecognizedMagErr {
-		t.Errorf("attempting to set an unknown magnitude: bad error type: Got:%s Wanted:%s", err.errorType, unrecognizedMagErr)
+		t.Errorf("attempting to set an unknown magnitude: bad error type: Got:%v Wanted:%v", err.errorType, unrecognizedMagErr)
 	}
 }
 
@@ -109,9 +109,9 @@ func TestMagsetUnkownOrder(t *testing.T) {
 
 	err := ms.set('A', 1)
 	if err == nil {
-		t.Errorf("attempting to set magnitude of unknown order: no error returned when expected: wanted %s", magnOrderUnkownErr)
+		t.Errorf("attempting to set magnitude of unknown order: no error returned when expected: wanted %v", magnOrderUnkownErr)
 	} else if err.errorType != magnOrderUnkownErr {
-		t.Errorf("attempting to set magnitude of unknown order: bad error type: Got:%s  Wanted:%s", err.errorType, magnOrderUnkownErr)
+		t.Errorf("attempting to set magnitude of unknown order: bad error type: Got:%v  Wanted:%v", err.errorType, magnOrderUnkownErr)
 	}
 }
 
@@ -143,9 +143,9 @@ func TestMagset(t *testing.T) {
 			case i1 > i2:
 				err := ms.set(r2, i2)
 				if err == nil {
-					t.Errorf("setting magnitude value for %q after %q: no error returned when expected: wanted %s", ms[r2].label, ms[r1].label, magnOutOfOrderError)
+					t.Errorf("setting magnitude value for %q after %q: no error returned when expected: wanted %v", ms[r2].label, ms[r1].label, magnOutOfOrderError)
 				} else if err.errorType != magnOutOfOrderError {
-					t.Errorf("setting magnitude value for %q after %q: bad error type: Got:%v  Wanted:%s", ms[r2].label, ms[r1].label, err, magnOutOfOrderError)
+					t.Errorf("setting magnitude value for %q after %q: bad error type: Got:%v  Wanted:%v", ms[r2].label, ms[r1].label, err, magnOutOfOrderError)
 				}
 			}
 		}
