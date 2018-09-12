@@ -1,6 +1,6 @@
 // Copyright 2017 Timothy E. Peoples. All rights reserved.
 //
-// TODO(tep): Add requisit licensing preamble
+// TODO(tep): Add requisite licensing preamble
 
 // Package timespan provides a broad-scaled extension to time.Duration.
 //
@@ -29,11 +29,11 @@
 // weeks, months or even years. It also encapsulates a time.Duration value to
 // allow for resolutions as small a nanosecond.
 //
-// The abiguities around the length of a day or month (or even year) that
+// The ambiguities around the length of a day or month (or even year) that
 // restrict the broader scope of time.Duration are not a problem with Timespan
 // since it stores each, distinctly varying magnitude separately.
 //
-// That said, a Timespan by itself is inherantly abiguous and only acquires
+// That said, a Timespan by itself is inherently ambiguous and only acquires
 // precision when considered in the context of a specific point in time.
 // Because of this, two separate Timespan values may be functionally equivalent
 // from the perspective of one point in time but not from another.
@@ -78,14 +78,14 @@
 //
 // 5. Zero value magnitudes may be omitted.
 //
-// 6. Each specified magnitide must be accompanied by a coefficient.
+// 6. Each specified magnitude must be accompanied by a coefficient.
 //
 // 7. No whitespace is allowed anywhere in the string.
 //
 // 8. If supplied, the optional time.Duration string must be at the end of the
 // string and must (of course) be parseable by time.ParseDuration.
 //
-// The natural tendency while parsing a Timespan string is to assume a nagative
+// The natural tendency while parsing a Timespan string is to assume a negative
 // sign commutes across successive values until it is reversed. In other words,
 // the stated positive or negative sign is always "sticky" for later values.
 //
@@ -96,10 +96,10 @@
 //
 // Since a week is always 7 days, the available "W" magnitude is provided
 // merely as a convenience; it is not stored as part of the Timespan value.
-// Coeffients provided in weeks are stored as multiples of 7 days.
+// Coefficients provided in weeks are stored as multiples of 7 days.
 //
 // If ParseTimespan is unable to parse the given string, it returns nil and an
-// approprate error.
+// appropriate error.
 //
 // Grammar
 //
