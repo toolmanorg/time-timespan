@@ -7,7 +7,7 @@ import (
 )
 
 type element struct {
-	glyph	rune
+	glyph rune
 	magn  *magnitude
 }
 

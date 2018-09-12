@@ -20,10 +20,10 @@ type magset map[rune]*magnitude
 
 func newMagset() magset {
 	return magset(map[rune]*magnitude{
-		'Y': &magnitude{label: "year"},
-		'M': &magnitude{label: "month"},
-		'W': &magnitude{label: "week"},
-		'D': &magnitude{label: "day"},
+		'Y': {label: "year"},
+		'M': {label: "month"},
+		'W': {label: "week"},
+		'D': {label: "day"},
 	})
 }
 

@@ -116,14 +116,14 @@ func TestCoefficientSignOverride(t *testing.T) {
 			} else {
 				var want int
 				switch {
-					case str[0] == '+':
-						want = 123
+				case str[0] == '+':
+					want = 123
 
-					case str[0] == '-':
-						want = -123
+				case str[0] == '-':
+					want = -123
 
-					default:
-						want = 123 * sign
+				default:
+					want = 123 * sign
 				}
 				if got != want {
 					t.Errorf("Coefficient sign override failure.  Got:%d Wanted:%d", got, want)
