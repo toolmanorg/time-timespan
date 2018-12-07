@@ -1,8 +1,8 @@
 
-[![GoDoc](https://godoc.org/toolman.org/timespan?status.svg)](https://godoc.org/toolman.org/timespan) [![Go Report Card](https://goreportcard.com/badge/toolman.org/timespan)](https://goreportcard.com/report/toolman.org/timespan)
+[![GoDoc](https://godoc.org/toolman.org/time/timespan?status.svg)](https://godoc.org/toolman.org/time/timespan) [![Go Report Card](https://goreportcard.com/badge/toolman.org/time/timespan)](https://goreportcard.com/report/toolman.org/time/timespan)
 
 # timespan
-`import "toolman.org/timespan"`
+`import "toolman.org/time/timespan"`
 
 * [Overview](#pkg-overview)
 * [Index](#pkg-index)
@@ -11,7 +11,7 @@
 
 ```bash
 
-    go get toolman.org/timespan
+    go get toolman.org/time/timespan
 
 ```
 
