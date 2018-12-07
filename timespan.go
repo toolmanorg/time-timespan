@@ -127,7 +127,7 @@
 //
 //     <duration>    := {Anything parseable by time.ParseDuration}
 //
-package timespan // import "toolman.org/timespan"
+package timespan // import "toolman.org/time/timespan"
 
 import (
 	"fmt"
