@@ -1,7 +1,6 @@
 
-[![GoDoc](https://godoc.org/toolman.org/time/timespan?status.svg)](https://godoc.org/toolman.org/time/timespan) [![Go Report Card](https://goreportcard.com/badge/toolman.org/time/timespan)](https://goreportcard.com/report/toolman.org/time/timespan)
+# timespan [![Apache 2 License][license-img]][license] [![GitHub Release][release-img]][release] [![GoDoc][godoc-img]][godoc] [![Go Report Card][reportcard-img]][reportcard] [![Build Status][travis-img]][travis]
 
-# timespan
 `import "toolman.org/time/timespan"`
 
 * [Overview](#pkg-overview)
@@ -314,4 +313,21 @@ point in time t.  This is shorthand for:
 func (ts *Timespan) String() string
 ```
 String renders a Timespan into a form parseable by ParseTimespan.
+
+<!-- ======================================================================= -->
+
+[license-img]: https://img.shields.io/badge/License-Apache%202-d42129.svg
+[license]: https://github.com/toolmanorg/time-timespan/blob/master/LICENSE
+
+[release-img]: https://img.shields.io/github/release/toolmanorg/time-timespan/all.svg
+[release]: https://github.com/toolmanorg/time-timespan/releases
+
+[godoc-img]: https://godoc.org/toolman.org/time/timespan?status.svg
+[godoc]: https://godoc.org/toolman.org/time/timespan
+
+[reportcard-img]: https://goreportcard.com/badge/toolman.org/time/timespan
+[reportcard]: https://goreportcard.com/report/toolman.org/time/timespan
+
+[travis-img]: https://travis-ci.org/toolmanorg/time-timespan.svg?branch=master
+[travis]: https://travis-ci.org/toolmanorg/time-timespan
 
