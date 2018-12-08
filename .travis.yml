@@ -1,0 +1,14 @@
+language: go
+
+os:
+  - linux
+  - osx
+  - windows
+
+go_import_path: toolman.org/time/timespan
+
+go:
+  - "1.9.x"
+  - "1.10.x"
+  - "1.11.x"
+
