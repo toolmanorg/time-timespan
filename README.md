@@ -4,6 +4,9 @@
 `import "toolman.org/time/timespan"`
 
 * [Overview](#pkg-overview)
+  * [Motivation](#motivation)
+  * [Parsing](#parsing)
+  * [Grammar](#grammar)
 * [Index](#pkg-index)
 
 ## <a name="install">Install</a>
@@ -39,7 +42,7 @@ or, its virtual equivalent, "18 months" as a simple "18M".  Timespan
 strings can be as simple as "3W" for "3 weeks" or something crazy like
 "1Y2M3W4D5h6m7s89ms" which is (hopefully) quite self explanatory.
 
-### Motivation
+### <a name="motivation">Motivation</a>
 Unlike the standard time.Duration, which only provides accuracy and
 parseability at resolutions less than a day, a Timespan may cover many days,
 weeks, months or even years. It also encapsulates a time.Duration value to
@@ -63,7 +66,7 @@ savings time cutover, the "2 days" value would be either 47 or 49 hours
 In most cases however, these ambiguities are understood at the human level
 and Timespan will behave as the user intends without much further thought.
 
-### Parsing
+### <a name="parsing">Parsing</a>
 A Timespan string is the conjunction of one or more periods (as
 coefficient+magnitude pairs) plus an optional time.Duration string.
 
@@ -120,7 +123,7 @@ Coeffients provided in weeks are stored as multiples of 7 days.
 If ParseTimespan is unable to parse the given string, it returns nil and an
 approprate error.
 
-### Grammar
+### <a name="grammar">Grammar</a>
 Finally, for those so inclined, the formal grammar for a Timespan string
 is shown in the following Pseudo-BNF:
 
