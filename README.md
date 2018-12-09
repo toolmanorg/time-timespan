@@ -1,5 +1,5 @@
 
-# timespan [![Apache 2 License][license-img]][license] [![GitHub Release][release-img]][release] [![GoDoc][godoc-img]][godoc] [![Go Report Card][reportcard-img]][reportcard] [![Build Status][travis-img]][travis]
+# timespan [![Apache 2 License][lic-bdg]][lic-lnk] [![GitHub Release][rel-bdg]][rel-lnk] [![GoDoc][doc-bdg]][doc-lnk] [![Go Report Card][rpt-bdg]][rpt-lnk] [![Build Status][bld-bdg]][bld-lnk] [![Coverage Status][cov-bdg]][cov-lnk]
 
 `import "toolman.org/time/timespan"`
 
@@ -317,20 +317,25 @@ func (ts *Timespan) String() string
 ```
 String renders a Timespan into a form parseable by ParseTimespan.
 
+<!-- =====[  Badge Related URLs  ]========================================== -->
+
+[lic-bdg]: https://img.shields.io/badge/License-Apache%202-d42129.svg
+[lic-lnk]: https://github.com/toolmanorg/time-timespan/blob/master/LICENSE
+
+[rel-bdg]: https://img.shields.io/github/release/toolmanorg/time-timespan/all.svg
+[rel-lnk]: https://github.com/toolmanorg/time-timespan/releases
+
+[doc-bdg]: https://godoc.org/toolman.org/time/timespan?status.svg
+[doc-lnk]: https://godoc.org/toolman.org/time/timespan
+
+[rpt-bdg]: https://goreportcard.com/badge/toolman.org/time/timespan
+[rpt-lnk]: https://goreportcard.com/report/toolman.org/time/timespan
+
+[bld-bdg]: https://travis-ci.org/toolmanorg/time-timespan.svg?branch=master
+[bld-lnk]: https://travis-ci.org/toolmanorg/time-timespan
+
+[cov-bdg]: https://coveralls.io/repos/github/toolmanorg/time-timespan/badge.svg?branch=master
+[cov-lnk]: https://coveralls.io/github/toolmanorg/time-timespan?branch=master
+
 <!-- ======================================================================= -->
-
-[license-img]: https://img.shields.io/badge/License-Apache%202-d42129.svg
-[license]: https://github.com/toolmanorg/time-timespan/blob/master/LICENSE
-
-[release-img]: https://img.shields.io/github/release/toolmanorg/time-timespan/all.svg
-[release]: https://github.com/toolmanorg/time-timespan/releases
-
-[godoc-img]: https://godoc.org/toolman.org/time/timespan?status.svg
-[godoc]: https://godoc.org/toolman.org/time/timespan
-
-[reportcard-img]: https://goreportcard.com/badge/toolman.org/time/timespan
-[reportcard]: https://goreportcard.com/report/toolman.org/time/timespan
-
-[travis-img]: https://travis-ci.org/toolmanorg/time-timespan.svg?branch=master
-[travis]: https://travis-ci.org/toolmanorg/time-timespan
 
