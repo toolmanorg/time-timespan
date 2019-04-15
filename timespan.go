@@ -229,6 +229,12 @@ func ParseTimespan(s string) (*Timespan, error) {
 	return ts, nil
 }
 
+// IsZero returns true if the receiver is nil or if all of its component parts
+// have a zero value. Otherwise false is returned.
+func (ts *Timespan) IsZero() bool {
+	return ts == nil || (ts.Years == 0 && ts.Months == 0 && ts.Days == 0 && ts.Duration == 0)
+}
+
 // String renders a Timespan into a form parseable by ParseTimespan.
 func (ts *Timespan) String() string {
 	s := ""

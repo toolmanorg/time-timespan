@@ -141,3 +141,29 @@ func TestTimespanAdd(t *testing.T) {
 		t.Errorf("Timespan Add mismatch:\n\t Got: %+v\n\tWant: %+v", got, want)
 	}
 }
+
+func TestIsZero(t *testing.T) {
+	cases := map[string]*izTestcase{
+		"nil":      &izTestcase{nil, true},
+		"empty":    &izTestcase{new(Timespan), true},
+		"years":    &izTestcase{&Timespan{Years: 1}, false},
+		"months":   &izTestcase{&Timespan{Months: 1}, false},
+		"days":     &izTestcase{&Timespan{Days: 1}, false},
+		"duration": &izTestcase{&Timespan{Duration: 1}, false},
+	}
+
+	for name, tc := range cases {
+		t.Run(name, tc.test)
+	}
+}
+
+type izTestcase struct {
+	ts   *Timespan
+	want bool
+}
+
+func (tc *izTestcase) test(t *testing.T) {
+	if got := tc.ts.IsZero(); got != tc.want {
+		t.Errorf("(%v).IsZero() == %v; Wanted %v", tc.ts, got, tc.want)
+	}
+}
