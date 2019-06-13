@@ -139,7 +139,7 @@ limitations under the License.
 //
 //     <duration>    := {Anything parseable by time.ParseDuration}
 //
-package timespan // import "toolman.org/time/timespan"
+package timespan // import "toolman.org/time/timespan/v2"
 
 import (
 	"fmt"
