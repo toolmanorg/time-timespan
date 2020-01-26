@@ -1,5 +1,7 @@
 language: go
 
+env:
+  - GO111MODULES=on
 os:
   - linux
   - osx
@@ -8,8 +10,6 @@ os:
 go_import_path: toolman.org/time/timespan/v2
 
 go:
-  - "1.9.x"
-  - "1.10.x"
   - "1.11.x"
   - "1.12.x"
   - "1.13.x"
